@@ -1,0 +1,221 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Product Catalog REST API
+servers:
+  - url: 'http://localhost:3000/api/v1'
+paths:
+  /product:
+    get:
+      summary: 'Returns list of all product'
+      operationId: getAllProduct
+      tags:
+        - products
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: "Add new product to catalog"
+      operationId: addProduct
+      tags:
+        - products
+      requestBody:
+        description: "Product details"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddProduct'
+      responses:
+        '201':
+          description: Created
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /product/id:
+    get:
+      tags:
+      - products
+      summary: "Find product by ID"
+      description: "Returns a single product"
+      operationId: "getProductById"
+
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+        '400':
+          description: Bad Request
+
+        '404':
+          description: Not Found
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+      - products
+      summary: "Updates a product in the store with form data"
+      description: ""
+      operationId: "updateProductById"
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        description: "Product details"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+        '400':
+          description: Bad Request
+
+        '404':
+          description: Not Found
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+      - products
+      summary: "delete product by ID"
+      description: ""
+      operationId: "deleteProductById"
+
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+        '400':
+          description: Bad Request
+
+        '404':
+          description: Not Found
+
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - name
+        - caetgory
+        - model_number
+        - price
+        - details
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        model_number:
+          type: string
+        price:
+          type: number
+          format: double
+        details:
+          type: string
+
+    AddProduct:
+      type: object
+      required:
+        - name
+        - caetgory
+        - model_number
+        - price
+        - details
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        model_number:
+          type: string
+        price:
+          type: number
+          format: double
+        details:
+          type: string
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

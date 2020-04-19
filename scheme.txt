@@ -1,0 +1,6 @@
+Product
+    - name
+    - category
+    - model number
+    - price
+    - details:
